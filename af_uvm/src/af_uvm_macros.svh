@@ -44,8 +44,10 @@
 //
 // Group: Randomization
 //
-//| `AF_UVM_RAND      - randomize() with warning on failure
-//| `AF_UVM_RAND_WITH - randomize() with inline constraint, warns on failure
+//| `AF_UVM_RAND          - randomize() with warning on failure
+//| `AF_UVM_RAND_WITH     - randomize() with inline constraint, warns on failure
+//| `AF_UVM_RAND_STD      - std::randomize() for non-class variables
+//| `AF_UVM_RAND_STD_WITH - std::randomize() with inline constraint
 //
 // Group: Watchdog
 //
@@ -84,7 +86,7 @@
 //   <af_uvm_printf>, <af_uvm_error>
 `define af_uvm_display(MSG, VERBOSITY=UVM_MEDIUM, ID=get_name()) \
   begin \
-    if (uvm_report_enabled(VERBOSITY, UVM_INFO, ID)) \
+    if (uvm_report_enabled(VERBOSITY, UVM_INFO, ID) != 0) \
       uvm_report_info(ID, MSG, VERBOSITY, `uvm_file, `uvm_line); \
   end
 
@@ -107,7 +109,7 @@
 //   <af_uvm_display>
 `define af_uvm_printf(FORMAT_MSG, VERBOSITY=UVM_MEDIUM, ID=get_name()) \
   begin \
-    if (uvm_report_enabled(VERBOSITY, UVM_INFO, ID)) \
+    if (uvm_report_enabled(VERBOSITY, UVM_INFO, ID) != 0) \
       uvm_report_info(ID, $sformatf FORMAT_MSG, VERBOSITY, `uvm_file, `uvm_line); \
   end
 
@@ -126,7 +128,7 @@
 //| `af_uvm_warning("Unexpected idle", "MON")
 `define af_uvm_warning(MSG, ID=get_name()) \
   begin \
-    if (uvm_report_enabled(UVM_NONE, UVM_WARNING, ID)) \
+    if (uvm_report_enabled(UVM_NONE, UVM_WARNING, ID) != 0) \
       uvm_report_warning(ID, MSG, UVM_NONE, `uvm_file, `uvm_line); \
   end
 
@@ -148,7 +150,7 @@
 //   <af_uvm_fatal>, <af_uvm_warning>
 `define af_uvm_error(MSG, ID=get_name()) \
   begin \
-    if (uvm_report_enabled(UVM_NONE, UVM_ERROR, ID)) \
+    if (uvm_report_enabled(UVM_NONE, UVM_ERROR, ID) != 0) \
       uvm_report_error(ID, MSG, UVM_NONE, `uvm_file, `uvm_line); \
   end
 
@@ -170,7 +172,7 @@
 //   <af_uvm_error>
 `define af_uvm_fatal(MSG, ID=get_name()) \
   begin \
-    if (uvm_report_enabled(UVM_NONE, UVM_FATAL, ID)) \
+    if (uvm_report_enabled(UVM_NONE, UVM_FATAL, ID) != 0) \
       uvm_report_fatal(ID, MSG, UVM_NONE, `uvm_file, `uvm_line); \
   end
 
@@ -195,7 +197,7 @@
 //   <AF_UVM_RAND_WITH>
 `define AF_UVM_RAND(XN) \
   begin \
-    if (!XN.randomize()) \
+    if (XN.randomize() == 0) \
       uvm_report_warning("RNDFLD", $sformatf("Failed to randomize: %s", XN.sprint()), \
         UVM_NONE, `uvm_file, `uvm_line); \
   end
@@ -214,11 +216,62 @@
 //| `AF_UVM_RAND_WITH(myTxn, { addr inside {[0:255]}; })
 //
 // See Also:
-//   <AF_UVM_RAND>
+//   <AF_UVM_RAND>, <AF_UVM_RAND_STD>
 `define AF_UVM_RAND_WITH(XN, CNST) \
   begin \
-    if (!XN.randomize() with CNST) \
+    int afRandRslt; \
+    afRandRslt = XN.randomize() with CNST; \
+    if (afRandRslt == 0) \
       uvm_report_warning("RNDFLD", $sformatf("Failed to randomize: %s", XN.sprint()), \
+        UVM_NONE, `uvm_file, `uvm_line); \
+  end
+
+
+// Macro: AF_UVM_RAND_STD
+//
+// Calls std::randomize() on non-class ~VARS~ and issues UVM_WARNING
+// on failure. Avoids WIDTHTRUNC on Verilator by comparing return
+// value to 0 explicitly.
+//
+// Parameters:
+//   VARS - variable or comma-separated variable list to randomize
+//
+// Example:
+//| int addr, data;
+//| `AF_UVM_RAND_STD(addr)
+//| `AF_UVM_RAND_STD(addr, data)
+//
+// See Also:
+//   <AF_UVM_RAND_STD_WITH>, <AF_UVM_RAND>
+`define AF_UVM_RAND_STD(VARS) \
+  begin \
+    if (std::randomize(VARS) == 0) \
+      uvm_report_warning("RNDFLD", \
+        $sformatf("Failed to std::randomize: %s", `AF_UVM_DISP_ARG(VARS)), \
+        UVM_NONE, `uvm_file, `uvm_line); \
+  end
+
+// Macro: AF_UVM_RAND_STD_WITH
+//
+// Calls std::randomize() with an inline constraint on non-class ~VARS~
+// and issues UVM_WARNING on failure.
+//
+// Parameters:
+//   VARS - variable or comma-separated variable list to randomize
+//   CNST - inline constraint block, e.g. { addr < 16'hFF; }
+//
+// Example:
+//| `AF_UVM_RAND_STD_WITH(addr, { addr inside {[0:255]}; })
+//
+// See Also:
+//   <AF_UVM_RAND_STD>, <AF_UVM_RAND_WITH>
+`define AF_UVM_RAND_STD_WITH(VARS, CNST) \
+  begin \
+    int afRandRslt; \
+    afRandRslt = std::randomize(VARS) with CNST; \
+    if (afRandRslt == 0) \
+      uvm_report_warning("RNDFLD", \
+        $sformatf("Failed to std::randomize: %s", `AF_UVM_DISP_ARG(VARS)), \
         UVM_NONE, `uvm_file, `uvm_line); \
   end
 

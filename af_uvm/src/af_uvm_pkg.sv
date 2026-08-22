@@ -54,8 +54,10 @@ package af_uvm_pkg;
     logId = s;
   endfunction : set_name
 
+  function void printAfBanner();
+    uvm_report_info("AF_VLT_UVM", AF_UVM_COPYRIGHT, UVM_NONE);
+  endfunction : printAfBanner
+
 endpackage : af_uvm_pkg
 
 `endif // AF_UVM_PKG_SV
-
-import af_uvm_pkg::*;
