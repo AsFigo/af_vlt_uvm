@@ -1,0 +1,2 @@
+-f ${AF_VLT_UVM_HOME}/scripts/af_uvm_src.f
+../src/af_hello_world_uvm.sv

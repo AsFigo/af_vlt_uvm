@@ -1,0 +1,18 @@
+# UVM BCL pre-built docs — generated, not tracked
+af_uvm_bcl/docs/
+
+# Natural Docs build output
+docs/output/
+docs/nd_config/Working Data/
+
+# Simulation logs
+*.log
+
+# Simulator working directories
+simv
+simv.daidir/
+csrc/
+*.vcd
+*.vpd
+*.fsdb
+obj_dir/

@@ -1,0 +1,29 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Natural Docs
+        run: |
+          wget -q https://www.naturaldocs.org/downloads/natural_docs/2.3/Natural_Docs_2.3.zip
+          unzip -q Natural_Docs_2.3.zip -d naturaldocs
+
+      - name: Build docs
+        run: |
+          mkdir -p docs/output docs/nd_config
+          perl naturaldocs/NaturalDocs --input af_uvm/src \
+               --output HTML docs/output \
+               --project docs/nd_config
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/output
