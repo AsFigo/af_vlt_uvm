@@ -1,2 +1,3 @@
 -f ${AF_VLT_UVM_HOME}/scripts/af_uvm_src.f
+--top-module af_hello_world_uvm
 ../src/af_hello_world_uvm.sv

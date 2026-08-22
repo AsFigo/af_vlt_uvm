@@ -5,8 +5,10 @@ af_uvm_bcl/docs/
 docs/output/
 docs/nd_config/Working Data/
 
-# Simulation logs
+# Simulation logs and temp files
 *.log
+*.swp
+bkup_*
 
 # Simulator working directories
 simv
