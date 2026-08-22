@@ -26,11 +26,13 @@ module af_hello_world_uvm;
   int addr, data;
 
   initial begin
+    `af_uvm_display("Welcome to UVM + Verilator!")
+    #10;
     /* verilator lint_off WIDTHTRUNC */
     `uvm_info("AsFigo", "Hello from uvm_info!", UVM_MEDIUM)
     /* verilator lint_on WIDTHTRUNC */
+    #10;
     `af_uvm_display("Hello from af_uvm_display!")
-    `af_uvm_printf(("Hello from af_uvm_printf — sim time: %0t", $time))
     `AF_UVM_RAND_STD(addr)
     `AF_UVM_RAND_STD_WITH(data, { data inside {[0:255]}; })
     `af_uvm_printf(("addr=0x%0h data=0x%0h", addr, data))
