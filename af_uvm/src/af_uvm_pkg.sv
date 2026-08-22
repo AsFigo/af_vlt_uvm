@@ -37,7 +37,7 @@ package af_uvm_pkg;
   string logId = "AF_UVM";
 
   parameter string AF_UVM_COPYRIGHT =
-    "Copyright 2026 AsFigo Technologies, UK — Licensed under Apache 2.0";
+    "Copyright 2023-2026 AsFigo Technologies, UK — Licensed under Apache 2.0";
 
   /* verilator lint_off UNUSEDPARAM */
   parameter int AF_UVM_WDOG_DEL_IN_NS = 10000; // used by AF_UVM_WAIT, AF_UVM_WAIT_EV

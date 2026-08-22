@@ -26,6 +26,7 @@ module af_hello_world_uvm;
   int addr, data;
 
   initial begin
+    printAfBanner();
     `af_uvm_display("Welcome to UVM + Verilator!")
     #10;
     /* verilator lint_off WIDTHTRUNC */
