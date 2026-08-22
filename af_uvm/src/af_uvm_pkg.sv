@@ -39,7 +39,9 @@ package af_uvm_pkg;
   parameter string AF_UVM_COPYRIGHT =
     "Copyright 2026 AsFigo Technologies, UK — Licensed under Apache 2.0";
 
-  parameter int AF_UVM_WDOG_DEL_IN_NS = 10000;
+  /* verilator lint_off UNUSEDPARAM */
+  parameter int AF_UVM_WDOG_DEL_IN_NS = 10000; // used by AF_UVM_WAIT, AF_UVM_WAIT_EV
+  /* verilator lint_on UNUSEDPARAM */
 
   `include "af_uvm_macros.svh"
 
