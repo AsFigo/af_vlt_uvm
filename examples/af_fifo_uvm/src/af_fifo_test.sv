@@ -19,7 +19,9 @@
 // -------------------------------------------------------------
 //
 
+/* verilator lint_off IMPORTSTAR */
 import af_uvm_pkg::*;
+/* verilator lint_on IMPORTSTAR */
 
 `AF_UVM_TEST_BEGIN(afFifoTest)
 

@@ -475,7 +475,9 @@
 // See Also:
 //   <AF_UVM_TEST_END>
 `define AF_UVM_TEST_BEGIN(TEST_NAME) \
+  /* verilator lint_off DECLFILENAME */ \
   class TEST_NAME extends uvm_test; \
+  /* verilator lint_on DECLFILENAME */ \
     `uvm_component_utils(TEST_NAME) \
     function new(string name, uvm_component parent); \
       super.new(name, parent); \
