@@ -7,3 +7,4 @@
 ${AF_VLT_UVM_HOME}/af_uvm_bcl/src/uvm_pkg.sv
 -I${AF_VLT_UVM_HOME}/af_uvm/src
 ${AF_VLT_UVM_HOME}/af_uvm/src/af_uvm_pkg.sv
+${AF_VLT_UVM_HOME}/af_uvm/src/af_uvm_clk_utils.sv
