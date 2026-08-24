@@ -59,6 +59,11 @@
 //| `AF_UVM_CAST      - $cast wrapper, UVM_ERROR on type mismatch
 //| `AF_UVM_VPL_INT   - plusarg integer parser with cover point
 //| `AF_UVM_VPL_STR   - plusarg string parser
+//
+// Group: Test
+//
+//| `AF_UVM_TEST_BEGIN - open a uvm_test subclass with component_utils and new()
+//| `AF_UVM_TEST_END   - close the test class (endclass)
 //----------------------------------------------------------------------
 
 
@@ -446,5 +451,52 @@
     void'($value$plusargs(fmtStr, ARG_NAME)); \
     plusArgsInCode.push_back(str); \
   end
+
+
+//----------------------------------------------------------------------
+// Group: Test
+//----------------------------------------------------------------------
+
+// Macro: AF_UVM_TEST_BEGIN
+//
+// Opens a uvm_test subclass with `uvm_component_utils` and a standard
+// new() constructor. Close the class with <AF_UVM_TEST_END>.
+//
+// Parameters:
+//   TEST_NAME - class name for the test
+//
+// Example:
+//| `AF_UVM_TEST_BEGIN(myFifoTest)
+//|   virtual fifo_if vif;
+//|   extern virtual function void build_phase(uvm_phase phase);
+//|   extern virtual task         main_phase(uvm_phase phase);
+//| `AF_UVM_TEST_END
+//
+// See Also:
+//   <AF_UVM_TEST_END>
+`define AF_UVM_TEST_BEGIN(TEST_NAME) \
+  class TEST_NAME extends uvm_test; \
+    `uvm_component_utils(TEST_NAME) \
+    function new(string name, uvm_component parent); \
+      super.new(name, parent); \
+    endfunction : new
+
+// Macro: AF_UVM_TEST_END
+//
+// Closes the test class opened by <AF_UVM_TEST_BEGIN>.
+// Takes the same TEST_NAME so the endclass label matches.
+//
+// Parameters:
+//   TEST_NAME - class name, must match the corresponding AF_UVM_TEST_BEGIN
+//
+// Example:
+//| `AF_UVM_TEST_BEGIN(myFifoTest)
+//|   // ... class body ...
+//| `AF_UVM_TEST_END(myFifoTest)
+//
+// See Also:
+//   <AF_UVM_TEST_BEGIN>
+`define AF_UVM_TEST_END(TEST_NAME) \
+  endclass : TEST_NAME
 
 `endif // AF_UVM_MACROS_SVH
