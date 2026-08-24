@@ -35,6 +35,7 @@
 //
 // Example:
 //| af_uvm_clk_gen #(.FREQUENCY_MHZ(50)) u_clk (.clk(clk));
+/* verilator lint_off DECLFILENAME */
 module af_uvm_clk_gen #(
   parameter FREQUENCY_MHZ = 100,
   parameter INIT_VAL      = 0
@@ -101,3 +102,4 @@ module af_uvm_clk_div #(
   end : divide
 
 endmodule : af_uvm_clk_div
+/* verilator lint_on DECLFILENAME */
